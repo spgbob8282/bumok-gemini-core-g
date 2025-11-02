@@ -1,0 +1,11 @@
+[theme]
+# 기본 배경색을 검은색에 가깝게 설정 (다크 모드 활성화)
+base="dark" 
+# 메인 배경색을 진한 검은색으로 설정
+backgroundColor="#0E1117" 
+# 사이드바와 컴포넌트의 배경색을 약간 밝은 검은색으로 설정
+secondaryBackgroundColor="#262730" 
+# 글자색은 흰색으로 설정하여 가독성을 높임
+textColor="#FAFAFA" 
+# 주요 요소(버튼, 선택 상자 등)의 색상을 세련된 파란색 계열로 설정
+primaryColor="#4A8AFF"
