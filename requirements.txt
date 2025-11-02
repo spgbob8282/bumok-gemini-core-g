@@ -1,4 +1,4 @@
 streamlit
-google-genai # 또는 google-genai, google-genai-sdk 등 사용한 라이브러리
-streamlit-oauth # <<=== 이것이 반드시 있어야 합니다!
-requests
+streamlit-oauth
+# 사용한 다른 모든 라이브러리들... (예: google-genai, requests 등)
+pyyaml  # <<=== 이것을 추가합니다!
