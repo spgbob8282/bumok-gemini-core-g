@@ -2,7 +2,6 @@ import streamlit as st
 from google import genai
 import yaml 
 import requests 
-# Pillow는 이미지 처리에 사용되지만, Streamlit이 내부적으로 처리할 수도 있어 import를 생략하고 requirements.txt에만 명시합니다.
 
 # --- 1. 환경 설정 및 키 로드 ---
 try:
@@ -120,19 +119,20 @@ if prompt := st.chat_input("질문을 입력하세요..."):
         st.markdown(prompt)
 
     # 2. 챗봇 응답 처리
-    # 챗봇 아바타는 'robot'이 아닐 경우(업로드된 이미지일 경우)에만 avatar 매개변수를 사용합니다.
     try:
         if st.session_state.get('ai_avatar') != 'robot':
+            # 오타 수정: st.session_state로 수정
             with st.chat_message("assistant", avatar=st.session_state.get('ai_avatar')):
                 response = st.session_state.chat_session.send_message(prompt)
                 st.markdown(response.text)
                 st.session_state.messages.append({"role": "assistant", "content": response.text})
         else:
             with st.chat_message("assistant"):
+                # 오타 수정: st.session_state로 수정
                 response = st.session_state.chat_session.send_message(prompt)
                 st.markdown(response.text)
                 st.session_state.messages.append({"role": "assistant", "content": response.text})
             
     except Exception as e:
-        st.error(f"Gemini API 호출 중 오류가 발생했습니다. 잠시 후 다시 시도하거나 로그를 확인해주세요. 오류: {e}")
+        st.error(f"Gemini API 호출 중 오류가 발생했습니다. 오류: {e}")
         st.session_state.messages.append({"role": "assistant", "content": "죄송합니다. API 호출 중 오류가 발생했습니다."})
