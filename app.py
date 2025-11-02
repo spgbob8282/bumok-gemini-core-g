@@ -45,14 +45,14 @@ with st.sidebar:
     # 호칭 설정
     user_appellation = st.text_input(
         "챗봇이 당신을 부를 호칭:", 
-        value=st.session_state.get("user_appellation", "학생"), 
+        value=st.session_state.get("user_appellation", "주인님"), 
         key="user_appellation"
     )
 
     # 말투 설정
     assistant_tone = st.text_area(
         "챗봇의 말투/스타일 지정:", 
-        value=st.session_state.get("assistant_tone", "존댓말을 사용하는, 전문적이면서도 친근한 교육 컨설턴트 말투"), 
+        value=st.session_state.get("assistant_tone", "설레는 듯한 달콤하고 부드러운 말투투"), 
         key="assistant_tone"
     )
 
