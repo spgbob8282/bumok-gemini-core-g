@@ -4,7 +4,6 @@ from google.genai import types
 from google.genai.errors import APIError
 import base64
 from gtts import gTTS # 텍스트-음성 변환
-from pydub import AudioSegment # 오디오 파일 처리
 from io import BytesIO # 메모리에서 오디오 데이터 처리
 from streamlit_webrtc import webrtc_streamer, WebRtcMode, AudioProcessorBase # 마이크 입력
 
@@ -49,7 +48,7 @@ if "avatar_base64" not in st.session_state:
 if "stt_text" not in st.session_state:
     st.session_state.stt_text = None
 
-# --- TTS 함수 정의 ---
+# --- TTS 함수 정의 (pydub 제거) ---
 def play_tts(text_to_speak):
     """gTTS를 사용하여 텍스트를 음성으로 변환하고 Streamlit에 재생합니다."""
     try:
@@ -61,7 +60,7 @@ def play_tts(text_to_speak):
         tts.write_to_fp(mp3_fp)
         mp3_fp.seek(0)
         
-        # Streamlit 오디오 컴포넌트를 사용하여 재생
+        # Streamlit 오디오 컴포넌트를 사용하여 재생 (pydub 없이 BytesIO 데이터 직접 사용)
         st.audio(mp3_fp.read(), format='audio/mp3', autoplay=True)
         
     except Exception as e:
@@ -70,11 +69,9 @@ def play_tts(text_to_speak):
 # --- 음성 입력 클래스 (STT를 위한 마이크 스트림 처리) ---
 class AudioProcessor(AudioProcessorBase):
     def __init__(self):
-        # 마이크 녹음이 시작되었다는 표시
         pass
 
     def recv(self, frame):
-        # 프레임별 오디오 데이터 처리 (고급 STT 기능이 필요하며, Streamlit 컴포넌트로는 복잡하여 여기서는 스트림만 받습니다.)
         return frame
 
 # --- 4. 사이드바 설정 (호칭, 말투, 아바타 설정) ---
@@ -176,7 +173,7 @@ for message in st.session_state.messages:
 # --- 7. 음성 입력 (STT) 컴포넌트 ---
 st.markdown("---")
 st.markdown("### 🎙️ 음성으로 대화하기 (마이크 입력)")
-st.info("마이크 버튼을 클릭하고 말하세요. 녹음이 끝나면 텍스트로 변환된 내용을 확인하고 '전송' 버튼을 누르세요.")
+st.info("마이크 버튼을 클릭하고 말하세요. 녹음 중에는 AI가 답변하지 않습니다.")
 
 # WebRTC 마이크 스트림 설정
 webrtc_ctx = webrtc_streamer(
@@ -186,9 +183,6 @@ webrtc_ctx = webrtc_streamer(
     media_stream_constraints={"video": False, "audio": True},
     async_processing=True,
 )
-
-# [주의] 이 부분은 Streamlit에서 오디오 스트림을 텍스트로 변환하는 외부 서비스가 필요합니다.
-# 현재는 마이크 입력을 받는 것만 구현합니다. 사용자는 텍스트를 직접 입력해야 합니다.
 
 # 8. 사용자 입력 처리 및 API 호출
 if webrtc_ctx.state.playing:
