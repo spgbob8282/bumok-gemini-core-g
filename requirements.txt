@@ -2,4 +2,3 @@ streamlit
 google-genai
 streamlit-webrtc
 gTTS
-pydub
