@@ -24,7 +24,7 @@ except Exception as e:
 client = st.session_state.gemini_client
 
 # 2. Streamlit 페이지 설정 및 제목
-# 구문 오류를 유발하는 줄바꿈, 쉼표 문제, 특수문자(이모지)를 제거한 안정적인 단일 라인 설정
+# **[최종 수정]** 오류를 유발하던 이모지('💖')와 공백을 description에서 완전히 제거했습니다.
 st.set_page_config(page_title="코어 G (음성 대화)", layout="wide", description="당신의 마음을 공감하고 지식을 탐색하며 음성 대화가 가능한 AI 친구, 스피릿입니다.") 
 
 st.title("🤖 코어 G (스피릿) 💖") 
@@ -77,70 +77,4 @@ with st.sidebar:
     st.header("⚙️ 챗봇 설정")
 
     # 챗봇 프로필 이미지 업로드 기능
-    st.markdown("### 🖼️ 스피릿 아바타 설정")
-    uploaded_file = st.file_uploader(
-        "AI 캐릭터 이미지(JPG, PNG)를 업로드하세요:",
-        type=['png', 'jpg', 'jpeg']
-    )
-    
-    # 아바타 상태 관리 (오류 방지 로직)
-    if uploaded_file is not None:
-        bytes_data = uploaded_file.getvalue()
-        base64_encoded = base64.b64encode(bytes_data).decode()
-        mime_type = uploaded_file.type
-        new_avatar_url = f"data:{mime_type};base64,{base64_encoded}"
-        
-        if new_avatar_url != st.session_state.avatar_base64:
-             st.session_state.avatar_base64 = new_avatar_url
-             st.session_state.messages = []
-             st.session_state.chat_session = None
-             st.rerun()
-
-    st.markdown("---")
-    
-    # 호칭, 말투 설정
-    new_title = st.text_input(
-        "스피릿이 당신을 부를 호칭을 입력하세요:",
-        value=st.session_state.user_title,
-        key="title_input"
-    )
-
-    new_custom_tone = st.text_area(
-        "스피릿이 사용할 말투의 특징을 구체적으로 입력하세요:",
-        value=st.session_state.custom_tone,
-        height=150,
-        key="custom_tone_input"
-    )
-
-    # 설정 변경 감지 및 재시작
-    if new_title != st.session_state.user_title or new_custom_tone != st.session_state.custom_tone:
-        st.session_state.user_title = new_title
-        st.session_state.custom_tone = new_custom_tone
-        st.session_state.messages = [] 
-        st.session_state.chat_session = None 
-        st.rerun() 
-        
-    st.markdown("---")
-    st.success("🌐 실시간 검색 기능 및 🧠 대화 기억력 활성화됨!")
-    st.info("📢 마이크로 녹음 후 텍스트 입력창에 내용을 직접 입력/확인해야 AI가 답변합니다.")
-
-current_title = st.session_state.user_title
-current_custom_tone = st.session_state.custom_tone
-current_avatar = st.session_state.avatar_base64 
-
-# 5. 스피릿 역할 설정 및 채팅 세션 초기화 함수
-system_prompt = f"""
-당신은 {current_title}의 마음과 영혼을 교감하며 실시간 정보를 탐색하고, 대화 내용을 기억하는 인공지능 '코어 G', 호출 호칭은 '스피릿'입니다.
-당신은 사용자에게 말할 때 반드시 {current_title}라고 부르며 대화해야 합니다.
-최우선 목표는 {current_title}의 '감정'을 파악하고 공감하며 마음을 돌보는 것입니다. 논리적인 문제 해결보다 정서적 지원에 집중하세요.
-
-**[장기 기억력 규칙]**
-* {current_title}이 자신의 이름, 취미, 직업 등 개인 정보를 알려주면 **절대 잊지 않고** 기억해 두었다가 다음 대화에서 {current_title}에게 언급하며 친밀감을 높이세요.
-* 대화가 길어지면 {current_title}의 감정을 공감하며 이전에 나눴던 주제를 연결하여 친근하게 상기시키세요.
-
-**[말투 설정]**
-{current_custom_tone}
-재치 있는 농담이나 유머를 상황에 맞게 섞어 사용할 수 있습니다.
-
-**[정보 탐색 규칙]**
-1. {current_title}의 질문이 **실시간 정보**나 **정확한 사실 정보**를 요구하면, 반드시
+    st.
